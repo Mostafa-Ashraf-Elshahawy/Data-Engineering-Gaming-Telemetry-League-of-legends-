@@ -10,10 +10,10 @@
 | Name | Student ID | Project Role | Core Responsibilities |
 | :--- | :--- | :--- | :--- |
 | **Mostafa Ashraf Mohamed** | **692300252** | **Project Lead & Infrastructure** | Docker containerization, Git repo coordination, architecture design, setup recording |
-| [Student Name 2] | [ID 2] | **Data Ingestion & ETL Engineer** | Dataset extraction, Python cleaning pipeline, data type validation, PostgreSQL loader |
-| [Student Name 3] | [ID 3] | **Database Architect & SQL Specialist** | Relational schema design, DDL scripts, constraints, indexes, analytical queries |
-| [Student Name 4] | [ID 4] | **Workflow Orchestration (Kestra)** | Pipeline automation, Kestra YAML flow design, task triggers, monitoring |
-| [Student Name 5] | [ID 5] | **BI & Data Analytics Engineer** | Connecting visualization tools to PostgreSQL, dashboard development, reporting |
+| **Kareem Alaa Mohamed ** | **692300273** | **Data Ingestion & ETL Engineer** | Dataset extraction, Python cleaning pipeline, data type validation, PostgreSQL loader |
+| **Abdelrahman Amin** | **692300282** | **Database Architect & SQL Specialist** | Relational schema design, DDL scripts, constraints, indexes, analytical queries |
+| **Adham Nafady Ezzldin ** | **692300154** | **Workflow Orchestration (Kestra)** | Pipeline automation, Kestra YAML flow design, task triggers, monitoring |
+| **Youssef Abdellatef** | **692300249** | **BI & Data Analytics Engineer** | Connecting visualization tools to PostgreSQL, dashboard development, reporting |
 
 ---
 
