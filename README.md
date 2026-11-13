@@ -37,29 +37,38 @@ The dataset contains ranked matches from Iron to Diamond tiers across five game-
 ## Project Architecture
 
 ```text
-Raw CSV Files
-      |
-      v
-Python Ingestion & Cleaning
-      |
-      v
-PostgreSQL Database
-      |
-      v
-Kestra Orchestration
-      |
-      v
-Dashboard & Visualization
+┌────────────────────────────────────────────────────────┐
+│               KESTRA (Orchestration Engine)            │
+│   - Schedules workflows                                │
+│   - Triggers Python ingestion & SQL transformations    │
+│   - Pipeline monitoring & logging                      │
+└───────────────┬────────────────────────┬───────────────┘
+                │ triggers               │ triggers
+                ▼                        ▼
+  ┌───────────────────┐        ┌───────────────────┐        ┌───────────────────┐
+  │   Source Data     │        │    PostgreSQL     │        │    Dashboard /    │
+  │   (Zenodo CSVs)   │        │     Database      │        │   Visualization   │
+  └─────────┬─────────┘        │ (Docker Container)│        └─────────▲─────────┘
+            │                  └─────────▲─────────┘                  │
+            │ read                       │ load                       │ query
+            ▼                            │                            │
+  ┌───────────────────┐                  │                            │
+  │ Python Ingestion  │──────────────────┘                            │
+  │  (Data Cleaning)  │                                               │
+  └───────────────────┘                                               │
+            │                                                         │
+            └─────────────────────────────────────────────────────────┘
 ```
 
 ## Repository Structure
 
 ```text
-lol-match-data-analysis/
+Data-Engineering-Gaming-Telemetry-League-of-legends-/
 │
 ├── docs/
 ├── scripts/
 ├── sql/
+│   └── create_tables.sql
 ├── flows/
 │
 ├── docker-compose.yml
@@ -80,7 +89,7 @@ lol-match-data-analysis/
 
 ```bash
 git clone YOUR_REPOSITORY_URL
-cd lol-match-data-analysis
+cd Data-Engineering-Gaming-Telemetry-League-of-legends-
 ```
 
 ### 2. Configure environment variables
