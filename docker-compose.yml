@@ -3,18 +3,17 @@ services:
     image: postgres:16
     container_name: lol_postgres
     restart: unless-stopped
-
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-
     ports:
       - "5432:5432"
-
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql:ro
+    networks:
+      - lol_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
@@ -25,17 +24,46 @@ services:
     image: dpage/pgadmin4:latest
     container_name: lol_pgadmin
     restart: unless-stopped
-
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
-
     ports:
       - "5050:80"
-
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - lol_network
+
+  ingestion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lol_ingestion
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      RAW_DATA_DIR: /app/data/raw
+      RAW_SCHEMA: ${RAW_SCHEMA:-raw}
+      ZENODO_RECORD_ID: ${ZENODO_RECORD_ID:-8303397}
+      FORCE_DOWNLOAD: ${FORCE_DOWNLOAD:-false}
+    volumes:
+      - ./data:/app/data
+      - ./scripts:/app/scripts
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - lol_network
 
 volumes:
   postgres_data:
+
+networks:
+  lol_network:
+    driver: bridge

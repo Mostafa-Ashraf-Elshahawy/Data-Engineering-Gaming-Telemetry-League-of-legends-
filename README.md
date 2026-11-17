@@ -15,7 +15,7 @@ The goal is to build a data pipeline that extracts, processes, stores, and analy
 The dataset contains ranked matches from Iron to Diamond tiers across five game-time intervals.
 
 - Files: `full_data_20.csv`, `full_data_40.csv`, `full_data_60.csv`, `full_data_80.csv`, `full_data_100.csv`
-- Rows: 16,562 per file
+- Rows: 64,556 per file (322,780 total snapshot records)
 - Columns: 42 per file
 
 ## Analytical Questions
@@ -65,13 +65,20 @@ The dataset contains ranked matches from Iron to Diamond tiers across five game-
 ```text
 Data-Engineering-Gaming-Telemetry-League-of-legends-/
 │
+├── data/
+│   └── raw/
 ├── docs/
+│   ├── proposal.md
+│   └── phase2_notes.md
 ├── scripts/
+│   └── ingest_data.py
 ├── sql/
 │   └── create_tables.sql
 ├── flows/
 │
+├── Dockerfile
 ├── docker-compose.yml
+├── requirements.txt
 ├── .env.example
 ├── .gitignore
 └── README.md
