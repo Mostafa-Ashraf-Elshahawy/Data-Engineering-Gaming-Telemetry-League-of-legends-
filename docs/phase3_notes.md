@@ -64,6 +64,36 @@ erDiagram
     }
 ```
 
+```text
+                        ┌────────────────────────────────────┐
+                        │           public.matches           │
+                        │        (Dimension: 61,893)         │
+                        ├────────────────────────────────────┤
+                        │ PK  match_id          VARCHAR(50)  │
+                        │     full_time_ms      BIGINT       │
+                        │     game_duration_min NUMERIC(5,2) │
+                        └─────────────────┬──────────────────┘
+                                          │ 1
+                         ┌────────────────┴────────────────┐
+                         │ 1:10                            │ 1:10
+                         ▼ (5 intervals x 2 teams)         ▼ (5 intervals x 2 teams)
+┌─────────────────────────────────────────┐   ┌─────────────────────────────────────────┐
+│            public.team_stats            │   │        public.objectives_control        │
+│             (Fact: 618,930)             │   │             (Fact: 618,930)             │
+├─────────────────────────────────────────┤   ├─────────────────────────────────────────┤
+│ PK  stat_id            BIGSERIAL        │   │ PK  objective_id       BIGSERIAL        │
+│ FK  match_id           VARCHAR(50)      │   │ FK  match_id           VARCHAR(50)      │
+│ UQ  snapshot_time_pct  INT (20..100)    │   │ UQ  snapshot_time_pct  INT (20..100)    │
+│ UQ  team_color         VARCHAR ('Blue') │   │ UQ  team_color         VARCHAR ('Blue') │
+│     total_gold         INT              │   │     dragons_killed     INT              │
+│     champion_kills     INT              │   │     barons_killed      INT              │
+│     towers_destroyed   INT (0..11)      │   │     heralds_killed     INT              │
+│     first_blood        BOOLEAN          │   └─────────────────────────────────────────┘
+│     win                BOOLEAN          │
+└─────────────────────────────────────────┘
+  * Composite UNIQUE constraint on (match_id, snapshot_time_pct, team_color)
+```
+
 ### Schema & JOIN Justification
 1. **Eliminating Update & Storage Anomalies (3NF):** In the raw CSVs, match-level metadata (`matchID`, `fullTimeMS`) is duplicated 5 times across the interval files. Moving `full_time_ms` and `game_duration_min` into the dimension table `public.matches` (`match_id` PK) stores match duration once per match (`61,893` rows).
 2. **Unpivoting Wide Team Columns (`Blue` / `Red`):** Storing Blue and Red metrics as separate rows identified by `(match_id, snapshot_time_pct, team_color)` with a `UNIQUE` composite constraint allows symmetric aggregation across winning and losing teams without writing messy `CASE WHEN blueWin ... ELSE red...` expressions.
