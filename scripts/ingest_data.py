@@ -14,10 +14,15 @@ from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 import requests
-from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import OperationalError, SQLAlchemyError
+
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv() -> None:
+        pass
 
 # Configure structured console logging
 logging.basicConfig(

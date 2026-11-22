@@ -14,11 +14,12 @@ COPY requirements.txt /app/requirements.txt
 # Install Python dependencies without storing pip cache
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-# Copy pipeline scripts into the container
+# Copy pipeline scripts and SQL files into the container
 COPY scripts/ /app/scripts/
+COPY sql/ /app/sql/
 
 # Create raw data landing directory (mounted via volume in docker-compose.yml)
 RUN mkdir -p /app/data/raw
 
-# Execute the modular ingestion script when the container starts
-CMD ["python", "scripts/ingest_data.py"]
+# Execute Phase 2 raw ingestion followed by Phase 3 cleaning, loading & quality checks
+CMD ["sh", "-c", "python scripts/ingest_data.py && python scripts/clean_and_load.py"]

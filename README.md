@@ -69,16 +69,22 @@ Data-Engineering-Gaming-Telemetry-League-of-legends-/
 │   └── raw/
 ├── docs/
 │   ├── proposal.md
-│   └── phase2_notes.md
+│   ├── phase2_notes.md
+│   └── phase3_notes.md
 ├── scripts/
-│   └── ingest_data.py
+│   ├── ingest_data.py
+│   └── clean_and_load.py
 ├── sql/
-│   └── create_tables.sql
+│   ├── create_tables.sql
+│   ├── analytical_views.sql
+│   ├── quality_checks.sql
+│   └── verify_raw_data.sql
 ├── flows/
 │
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
+├── DATA_QUALITY.md
 ├── .env.example
 ├── .gitignore
 └── README.md
