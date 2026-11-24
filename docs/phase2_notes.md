@@ -86,7 +86,7 @@ Profiling all five raw files (`64,556` rows × `5` files = `322,780` total rows,
 
 ---
 
-## 4. Containerization & Docker Networking Reference (Lab Defense Prep)
+## 4. Containerization & Docker Networking Reference
 
 ### `Dockerfile` Breakdown
 - `FROM python:3.11-slim`: Uses the official lightweight Debian-based Python 3.11 image to minimize image size and attack surface.
